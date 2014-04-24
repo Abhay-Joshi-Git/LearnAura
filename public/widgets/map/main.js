@@ -37,8 +37,8 @@ define({
     var style = new OpenLayers.Style({
       //Default Attributes
       pointRadius: "${radius}",
-      fillColor: "orange",//Cluster Color
-      fillOpacity: 0.8,//Cluster Opacity
+      fillColor: "${color}",//"orange",
+      fillOpacity: 0.8,
       strokeColor: "pink",
       strokeWidth: "${width}",
       strokeOpacity: 0.8
@@ -53,6 +53,14 @@ define({
             pix = Math.min(feature.attributes.count, 7) + 2;
           }
           return pix;
+        },
+        color : function (feature){
+          var color = "red";
+          if (feature.geometry.x < 0)
+            color = "red";
+          else
+            color = "blue"
+          return color
         }
       }
     });
