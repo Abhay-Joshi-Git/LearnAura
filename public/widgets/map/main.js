@@ -25,30 +25,15 @@ define({
       var layer = new OpenLayers.Layer.Vector("WFS", {
           strategies: [new OpenLayers.Strategy.BBOX()],
           protocol: new OpenLayers.Protocol.WFS({
-              url:  "http://demo.opengeo.org/geoserver/wfs",
-              featureType: "tasmania_roads",
+              url: "http://demo.opengeo.org/geoserver/wfs"
+              ,
+              featureType: "tasmania_roads",//"states",
               featureNS: "http://www.openplans.org/topp"
           }),
           styleMap: new OpenLayers.StyleMap({
-              strokeWidth: 3,
+              strokeWidth: 4,
               strokeColor: "#333333"
           })
-//          ,
-//          filter: new OpenLayers.Filter.Logical({
-//              type: OpenLayers.Filter.Logical.OR,
-//              filters: [
-//                  new OpenLayers.Filter.Comparison({
-//                      type: OpenLayers.Filter.Comparison.EQUAL_TO,
-//                      property: "TYPE",
-//                      value: "highway"
-//                  }),
-//                  new OpenLayers.Filter.Comparison({
-//                      type: OpenLayers.Filter.Comparison.EQUAL_TO,
-//                      property: "TYPE",
-//                      value: "road"
-//                  })
-//              ]
-//          })
       })
 
 
@@ -58,13 +43,21 @@ define({
     map.addControl(select);
     select.activate();
     layer.events.on({"featureselected": this.display});
-    map.addLayers([new OpenLayers.Layer.WMS(
-        "Natural Earth",
-        "http://demo.opengeo.org/geoserver/wms",
-        {layers: "topp:naturalearth"}
-    ), layer]);
-    map.setCenter(new OpenLayers.LonLat(0, 0), 2);
+
+      var road = new OpenLayers.Layer.Bing({
+          key: 'AhZVxIDQ6M8CC6ebk4vYhR7CkaT4KCk6rSdB8nGAThS7uDbBIfL0GJ-DVpa73Crq',
+          type: "road"
+      });
+
+      var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+      var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+      var position       = new OpenLayers.LonLat(-90.47,40.17).transform( fromProjection, toProjection);
+
+    map.addLayers([road, layer]);
+    map.setCenter(position, 4);
+
   },
+
   display:function(event){
     var f = event.feature;
     var $el = $("#output");
@@ -79,3 +72,15 @@ define({
     map.zoomOut();
   }
 });
+
+
+//AhZVxIDQ6M8CC6ebk4vYhR7CkaT4KCk6rSdB8nGAThS7uDbBIfL0GJ-DVpa73Crq
+//?service=wfs&version=1.1.0&request=GetFeature&typename=usa:states&featureid=states.39
+/*
+new OpenLayers.Layer.WMS(
+ "Natural Earth",
+ "http://demo.opengeo.org/geoserver/wms",
+ {layers: "topp:naturalearth"}
+ )
+*
+* */
