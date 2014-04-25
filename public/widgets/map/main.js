@@ -51,7 +51,7 @@ define({
 
       var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
       var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-      var position       = new OpenLayers.LonLat(-90.47,40.17).transform( fromProjection, toProjection);
+      var position       = new OpenLayers.LonLat(147, -42).transform( fromProjection, toProjection);
 
     map.addLayers([road, layer]);
     map.setCenter(position, 4);
