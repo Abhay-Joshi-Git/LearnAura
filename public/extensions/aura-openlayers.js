@@ -1,7 +1,7 @@
 define({
 	require: {
 		paths: {
-			openlayers: 'bower_components/openlayers/OpenLayers'
+			openlayers: 'bower_components/openlayers/OpenLayers.debug'
 		},
 		shim: {
 			openlayers: {
